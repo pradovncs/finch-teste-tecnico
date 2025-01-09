@@ -1,0 +1,35 @@
+version: '3.11'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ${USERPROFILE}/Downloads:/app/output
+    depends_on:
+      - rabbitmq
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "python", "/app/app.py"]
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ${USERPROFILE}/Downloads:/app/output
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "python", "/app/worker.py"]
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_HEARTBEAT: 300
+    ports:
+      - "5672:5672"
+      - "15672:15672"
