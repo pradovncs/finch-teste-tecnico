@@ -13,7 +13,7 @@ RabbitMQ (configurado no docker-compose.yml).
 ### 1. Clonar o Repositório
 
 ```bash
-git clone git@github.com:tensairod/desafio-hyperativa.git
+git clone https://github.com/pradovncs/finch-teste-tecnico.git
 ```
 
 ### 2. Suba os serviços com Docker Compose de acordo com o seu sistema operacional
